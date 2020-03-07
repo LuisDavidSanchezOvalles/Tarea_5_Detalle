@@ -28,12 +28,5 @@ namespace RegistroDetalle.Entidades
             TipoTelefono = tipoTelefono;
             Telefono = telefono;
         }
-
-        public TelefonosDetalle(string tipoTelefono, string telefono)
-        {
-            Id = 0;
-            TipoTelefono = tipoTelefono;
-            Telefono = telefono;
-        }
     }
 }

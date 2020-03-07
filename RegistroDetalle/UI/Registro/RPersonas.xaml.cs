@@ -72,6 +72,9 @@ namespace RegistroDetalle.UI.Registro
                 }
             }
 
+            if (string.IsNullOrWhiteSpace(DireccionTextBox.Text))
+                paso = false;
+
             if (string.IsNullOrWhiteSpace(CedulaTextBox.Text))
                 paso = false;
             else
@@ -83,7 +86,12 @@ namespace RegistroDetalle.UI.Registro
                 }
             }
 
-            //faltan las demas validaciones
+            if (TelefonosDataGrid.Columns.Count == 0)
+            {
+                MessageBox.Show("Todos los Campos debe LLenarlo y Tiene que Agregarlo...");
+                TelefonosDataGrid.Focus();
+                paso = false;
+            }
 
             if (paso == false)
                 MessageBox.Show("Datos invalidos");
@@ -93,9 +101,9 @@ namespace RegistroDetalle.UI.Registro
 
         private bool ExisteEnLaBaseDeDatos()
         {
-            Persona personaAnterior = PersonasBLL.Buscar(persona.PersonaId);
+            Persona PersonaAnterior = PersonasBLL.Buscar(persona.PersonaId);
 
-            return personaAnterior != null;
+            return PersonaAnterior != null;
         }
 
         private void GuardarButton_Click(object sender, RoutedEventArgs e)
@@ -150,11 +158,11 @@ namespace RegistroDetalle.UI.Registro
 
         private void BuscarButton_Click(object sender, RoutedEventArgs e)
         {
-            Persona personaAnterior = PersonasBLL.Buscar(persona.PersonaId);
+            Persona PersonaAnterior = PersonasBLL.Buscar(persona.PersonaId);
 
-            if (personaAnterior != null)
+            if (PersonaAnterior != null)
             {
-                persona = personaAnterior;
+                persona = PersonaAnterior;
                 Recargar();
             }
             else
@@ -166,7 +174,7 @@ namespace RegistroDetalle.UI.Registro
 
         private void AgregarButton_Click(object sender, RoutedEventArgs e)
         {
-            persona.Telefonos.Add(new TelefonosDetalle(TelefonoTextBox.Text, TipoTextBox.Text));
+            persona.Telefonos.Add(new TelefonosDetalle(persona.PersonaId ,TelefonoTextBox.Text, TipoTextBox.Text));
 
             Recargar();
 
