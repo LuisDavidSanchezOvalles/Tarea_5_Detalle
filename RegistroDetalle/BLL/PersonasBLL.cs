@@ -38,8 +38,17 @@ namespace RegistroDetalle.BLL
             bool paso = false;
 
             try
-            {//buscar entidades que no estan para removerlas
-                var Anterior = PersonasBLL.Buscar(persona.PersonaId);
+            {
+                db.Database.ExecuteSqlRaw($"Delete FROM TelefonosDetalle Where PersonaId = {persona.PersonaId}");
+
+                foreach(var item in persona.Telefonos)
+                {
+                    db.Entry(item).State = EntityState.Added;
+                }
+                db.Entry(persona).State = EntityState.Modified;
+                paso = db.SaveChanges() > 0;
+
+                /*var Anterior = PersonasBLL.Buscar(persona.PersonaId);
 
                 //para borrar de la db los telefonos que ya no existen
                 foreach (var item in Anterior.Telefonos)
@@ -56,7 +65,7 @@ namespace RegistroDetalle.BLL
                 }
 
                 db.Entry(persona).State = EntityState.Modified;
-                paso = db.SaveChanges() > 0;
+                paso = db.SaveChanges() > 0;*/
             }
             catch (Exception)
             {
